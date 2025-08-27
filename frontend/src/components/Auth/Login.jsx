@@ -49,8 +49,8 @@ const Login = () => {
             <label htmlFor="username">Email</label>
             <input
               type="text"
-              id="username"
-              name="username"
+              id="email"
+              name="email"
               value={formData.email}
               onChange={handleChange}
               required
