@@ -21,7 +21,7 @@ exports.uploadImage = async (req, res) => {
     const image = new Image({
       name,
       fileName: req.file.filename,
-      filePath: req.file.path,
+      filePath: `uploads/${req.file.filename}`,
       folderId,
       userId,
       fileSize: req.file.size,
@@ -31,6 +31,7 @@ exports.uploadImage = async (req, res) => {
     await image.save();
     res.status(201).json(image);
   } catch (error) {
+     console.error('Upload error:', error);
     res.status(500).json({ message: error.message });
   }
 };

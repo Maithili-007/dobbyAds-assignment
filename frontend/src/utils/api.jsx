@@ -50,7 +50,15 @@ class ApiService {
 
   // Helper method to get image URL
   getImageUrl(imagePath) {
-    return `${import.meta.env.VITE_SERVER_URL || 'http://localhost:5000'}/${imagePath}`;
+    // If already a full URL, return as-is
+    if (imagePath && imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    // Build proper URL
+    const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
+    // Remove 'uploads/' if it's already in imagePath
+    const cleanPath = imagePath.startsWith('uploads/') ? imagePath : `uploads/${imagePath}`;
+    return `${serverUrl}/${cleanPath}`;
   }
 }
 
