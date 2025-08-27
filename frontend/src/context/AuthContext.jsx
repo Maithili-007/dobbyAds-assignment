@@ -57,22 +57,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signup = async (userData) => {
-    try {
-      const response = await api.post('/auth/register', userData);
-      const { token, user } = response.data;
-      
-      localStorage.setItem('token', token);
-      api.setAuthToken(token);
-      setUser(user);
-      
-      return { success: true };
-    } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Signup failed' 
-      };
-    }
-  };
+  try {
+    await api.post('/auth/register', userData);
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.response?.data?.message || 'Signup failed'
+    };
+  }
+};
 
   const logout = () => {
     localStorage.removeItem('token');
