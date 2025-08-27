@@ -12,7 +12,17 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://dobby-ads-assignment-flax.vercel.app/login',     // Add your frontend URL here
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
