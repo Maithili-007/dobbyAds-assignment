@@ -49,7 +49,7 @@ exports.getFolders = async (req, res) => {
     const folders = await Folder.find({
       userId,
       parentId: parentId || null
-    }).sort({ name: 1 });
+    }).select('_id name path parentId').sort({ name: 1 });
 
     res.json(folders);
   } catch (error) {

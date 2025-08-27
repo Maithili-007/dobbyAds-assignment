@@ -5,13 +5,17 @@ const path = require('path');
 
 exports.uploadImage = async (req, res) => {
   try {
-    // … validation omitted for brevity …
+    const { name, folderId } = req.body;   // ✅ fix
+    const userId = req.user._id;           // ✅ from logged in user
 
-    // req.file.path (or req.file.url) is full Cloudinary URL
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
     const image = new Image({
       name,
       fileName: req.file.filename,
-      filePath: req.file.path || req.file.url,  // ✅ SAVE FULL URL
+      filePath: req.file.path || req.file.url,
       folderId,
       userId,
       fileSize: req.file.size || req.file.bytes,
@@ -19,7 +23,7 @@ exports.uploadImage = async (req, res) => {
     });
 
     await image.save();
-    res.status(201).json(image);
+    res.status(201).json({ success: true, image });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -61,7 +61,7 @@ const FolderItem = ({ folder, children }) => {
             <FolderItem 
               key={childFolder._id} 
               folder={childFolder} 
-              children={childFolder.children || []}
+              children={childFolder.children ?? []}
             />
           ))}
         </div>
