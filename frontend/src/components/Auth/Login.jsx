@@ -5,7 +5,7 @@ import Button from '../Common/Button.jsx';
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [error, setError] = useState('');
@@ -46,12 +46,12 @@ const Login = () => {
           {error && <div className="error-message">{error}</div>}
           
           <div className="form-group">
-            <label htmlFor="username">Username or Email</label>
+            <label htmlFor="username">Email</label>
             <input
               type="text"
               id="username"
               name="username"
-              value={formData.username}
+              value={formData.email}
               onChange={handleChange}
               required
               disabled={loading}
