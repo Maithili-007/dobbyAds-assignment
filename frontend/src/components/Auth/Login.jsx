@@ -48,51 +48,58 @@ const Login = () => {
         setGeneralError(result.error);
       }
     }
+
     setLoading(false);
   };
 
   return (
     <div className="auth-container">
-      <h1 className="title">Sign in to your account</h1>
-
-      {generalError && <div className="error-message">{generalError}</div>}
-
-      <form onSubmit={handleSubmit} className="auth-form">
-        <div className="form-group">
-          <label htmlFor="email">Email *</label>
-          <input
-            className="form-input"
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            disabled={loading}
-          />
-          {errors.email && <div className="field-error">{errors.email}</div>}
+      <div className="auth-card">
+        <div className="auth-header">
+          <h2>Sign in to your account</h2>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="password">Password *</label>
-          <input
-            className="form-input"
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            disabled={loading}
-          />
-          {errors.password && <div className="field-error">{errors.password}</div>}
+        {generalError && <div className="error-message">{generalError}</div>}
+
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <label htmlFor="email">Email *</label>
+            <input
+              className="form-input"
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={loading}
+            />
+            {errors.email && <div className="error-message">{errors.email}</div>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Password *</label>
+            <input
+              className="form-input"
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              disabled={loading}
+            />
+            {errors.password && <div className="error-message">{errors.password}</div>}
+          </div>
+
+          <Button type="submit" variant="primary" loading={loading}>Sign In</Button>
+        </form>
+
+        <div className="auth-footer">
+          <p>
+            Don't have an account?{' '}
+            <Link className="link" to="/signup">Sign up here</Link>
+          </p>
         </div>
-
-        <Button type="submit" variant="primary" loading={loading}>Sign In</Button>
-      </form>
-
-      <p className="text-center">
-        Don't have an account?{' '}
-        <Link className="link" to="/signup">Sign up here</Link>
-      </p>
+      </div>
     </div>
   );
 };

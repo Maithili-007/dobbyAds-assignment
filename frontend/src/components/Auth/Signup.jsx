@@ -16,7 +16,6 @@ const Signup = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
 
-  // Client-side validating the input fields
   const validate = () => {
     const newErrors = {};
 
@@ -66,74 +65,80 @@ const Signup = () => {
 
   return (
     <div className="auth-container">
-      <h1 className="title">Join us today</h1>
-
-      {generalError && <div className="error-message">{generalError}</div>}
-
-      <form onSubmit={handleSubmit} className="auth-form">
-        <div className="form-group">
-          <label htmlFor="username">Username *</label>
-          <input
-            className="form-input"
-            type="text"
-            id="username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            disabled={loading}
-          />
-          {errors.username && <div className="field-error">{errors.username}</div>}
+      <div className="auth-card">
+        <div className="auth-header">
+          <h2>Join us today</h2>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="email">Email *</label>
-          <input
-            className="form-input"
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            disabled={loading}
-          />
-          {errors.email && <div className="field-error">{errors.email}</div>}
+        {generalError && <div className="error-message">{generalError}</div>}
+
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <label htmlFor="username">Username *</label>
+            <input
+              className="form-input"
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              disabled={loading}
+            />
+            {errors.username && <div className="error-message">{errors.username}</div>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">Email *</label>
+            <input
+              className="form-input"
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={loading}
+            />
+            {errors.email && <div className="error-message">{errors.email}</div>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Password *</label>
+            <input
+              className="form-input"
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              disabled={loading}
+            />
+            {errors.password && <div className="error-message">{errors.password}</div>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirm Password *</label>
+            <input
+              className="form-input"
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              disabled={loading}
+            />
+            {errors.confirmPassword && <div className="error-message">{errors.confirmPassword}</div>}
+          </div>
+
+          <Button type="submit" variant="primary" loading={loading}>Sign Up</Button>
+        </form>
+
+        <div className="auth-footer">
+          <p>
+            Already have an account?{' '}
+            <Link className="link" to="/login">Sign in here</Link>
+          </p>
         </div>
-
-        <div className="form-group">
-          <label htmlFor="password">Password *</label>
-          <input
-            className="form-input"
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            disabled={loading}
-          />
-          {errors.password && <div className="field-error">{errors.password}</div>}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password *</label>
-          <input
-            className="form-input"
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            disabled={loading}
-          />
-          {errors.confirmPassword && <div className="field-error">{errors.confirmPassword}</div>}
-        </div>
-
-        <Button type="submit" variant="primary" loading={loading}>Sign Up</Button>
-      </form>
-
-      <p className="text-center">
-        Already have an account?{' '}
-        <Link className="link" to="/login">Sign in here</Link>
-      </p>
+      </div>
     </div>
   );
 };
