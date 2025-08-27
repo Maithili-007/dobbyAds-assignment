@@ -13,38 +13,38 @@ const UploadImageModal = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
   const { uploadImage, currentFolder } = useApp();
 
-  // FIXED: File input handler
+  // File input handler
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     console.log('File selected:', file); // Debug log
-    
+
     if (file) {
-      // Update state with the actual file object
-      setFormData(prev => ({ 
-        ...prev, 
-        image: file 
+      // Update state with file
+      setFormData(prev => ({
+        ...prev,
+        image: file
       }));
-      
-      // Create preview
+
+      // Preview the image
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result);
       };
       reader.readAsDataURL(file);
-      
-      // Auto-fill name if empty
+
+      // Autofill name if empty
       if (!formData.name) {
         const nameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
-        setFormData(prev => ({ 
-          ...prev, 
+        setFormData(prev => ({
+          ...prev,
           name: nameWithoutExtension,
-          image: file // Make sure to keep the file here too
+          image: file // keep file
         }));
       }
     }
   };
 
-  // FIXED: Name input handler
+  // Text input handler
   const handleNameChange = (e) => {
     setFormData(prev => ({
       ...prev,
@@ -52,37 +52,33 @@ const UploadImageModal = ({ onClose }) => {
     }));
   };
 
+  // Form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    console.log('Submit - Form data:', formData); // Debug log
-    console.log('Submit - File:', formData.image); // Debug log
-    
+    setError('');
+
     if (!formData.name.trim()) {
       setError('Image name is required');
       return;
     }
-    
+
     if (!formData.image) {
       setError('Please select an image file');
       return;
     }
-    
+
     if (!currentFolder) {
       setError('Please select a folder first');
       return;
     }
 
-    setError('');
     setLoading(true);
 
-    // Create FormData
     const uploadData = new FormData();
     uploadData.append('name', formData.name.trim());
     uploadData.append('image', formData.image);
     uploadData.append('folderId', currentFolder._id);
 
-    // Debug FormData
     console.log('FormData contents:');
     for (let pair of uploadData.entries()) {
       console.log(pair[0], ':', pair[1]);
@@ -90,7 +86,7 @@ const UploadImageModal = ({ onClose }) => {
 
     try {
       const result = await uploadImage(uploadData);
-      console.log('Upload result:', result); // Debug log
+      console.log('Upload result:', result);
 
       if (result.success) {
         onClose();
@@ -109,20 +105,21 @@ const UploadImageModal = ({ onClose }) => {
     <Modal title="Upload Image" onClose={onClose}>
       <form onSubmit={handleSubmit} className="upload-image-form">
         {error && <div className="error-message">{error}</div>}
-        
+
         <div className="form-group">
           <label htmlFor="imageName">Image Name *</label>
           <input
             type="text"
             id="imageName"
+            name="name"
             value={formData.name}
-            onChange={handleNameChange} // Use separate handler
+            onChange={handleNameChange}
             placeholder="Enter image name"
             disabled={loading}
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="imageFile">Select Image *</label>
           <input
@@ -133,14 +130,13 @@ const UploadImageModal = ({ onClose }) => {
             disabled={loading}
             required
           />
-          {/* Debug info */}
           {formData.image && (
             <div style={{ fontSize: '12px', color: 'green', marginTop: '5px' }}>
               ✅ File selected: {formData.image.name} ({Math.round(formData.image.size / 1024)} KB)
             </div>
           )}
         </div>
-        
+
         {preview && (
           <div className="form-group">
             <label>Preview</label>
@@ -149,14 +145,14 @@ const UploadImageModal = ({ onClose }) => {
             </div>
           </div>
         )}
-        
+
         <div className="form-group">
           <label>Upload Location</label>
           <div className="location-display">
             {currentFolder ? currentFolder.path : 'Please select a folder first'}
           </div>
         </div>
-        
+
         <div className="modal-actions">
           <Button type="button" variant="secondary" onClick={onClose}>
             Cancel
@@ -176,3 +172,4 @@ const UploadImageModal = ({ onClose }) => {
 };
 
 export default UploadImageModal;
+

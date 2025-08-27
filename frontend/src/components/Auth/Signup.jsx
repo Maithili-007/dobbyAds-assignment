@@ -45,9 +45,11 @@ const Signup = () => {
       password: formData.password
     });
     
-    if (!result.success) {
-      setError(result.error);
-    }
+    if (result.success) {
+    navigate('/login'); 
+  } else {
+    setError(result.error);
+  }
     
     setLoading(false);
   };
