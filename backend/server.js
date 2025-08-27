@@ -15,13 +15,21 @@ app.use(express.json());
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
-  'https://dobby-ads-assignment-flax.vercel.app/login',     // Add your frontend URL here
+  'https://dobby-ads-assignment-flax.vercel.app'
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like curl, mobile apps)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
   credentials: true
 }));
+
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
