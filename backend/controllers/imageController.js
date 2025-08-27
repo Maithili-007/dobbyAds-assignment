@@ -5,33 +5,22 @@ const path = require('path');
 
 exports.uploadImage = async (req, res) => {
   try {
-    const { name, folderId } = req.body;
-    const userId = req.user._id;
+    // … validation omitted for brevity …
 
-    if (!req.file) {
-      return res.status(400).json({ message: 'No image file provided' });
-    }
-
-    // Verify folder exists and belongs to user
-    const folder = await Folder.findOne({ _id: folderId, userId });
-    if (!folder) {
-      return res.status(404).json({ message: 'Folder not found' });
-    }
-
+    // req.file.path (or req.file.url) is full Cloudinary URL
     const image = new Image({
       name,
       fileName: req.file.filename,
-      filePath: `uploads/${req.file.filename}`,
+      filePath: req.file.path || req.file.url,  // ✅ SAVE FULL URL
       folderId,
       userId,
-      fileSize: req.file.size,
+      fileSize: req.file.size || req.file.bytes,
       mimetype: req.file.mimetype
     });
 
     await image.save();
     res.status(201).json(image);
   } catch (error) {
-     console.error('Upload error:', error);
     res.status(500).json({ message: error.message });
   }
 };

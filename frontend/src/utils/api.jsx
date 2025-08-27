@@ -47,19 +47,14 @@ class ApiService {
   async delete(url, config = {}) {
     return this.api.delete(url, config);
   }
-
-  // Helper method to get image URL
-  getImageUrl(imagePath) {
-    // If already a full URL, return as-is
-    if (imagePath && imagePath.startsWith('http')) {
-      return imagePath;
-    }
-    // Build proper URL
-    const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
-    // Remove 'uploads/' if it's already in imagePath
-    const cleanPath = imagePath.startsWith('uploads/') ? imagePath : `uploads/${imagePath}`;
-    return `${serverUrl}/${cleanPath}`;
+getImageUrl(imagePath) {
+  // If filePath is already a URL, return it
+  if (imagePath.startsWith('http')) {
+    return imagePath;
   }
+  // Otherwise fall back to server static path
+  return `${import.meta.env.VITE_SERVER_URL}/uploads/${imagePath}`;
+}
 }
 
 export const api = new ApiService();
